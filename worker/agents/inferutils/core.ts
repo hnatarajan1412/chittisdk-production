@@ -478,11 +478,9 @@ export async function infer<OutputSchema extends z.AnyZodObject>({
             if (!schema || !schemaName) {
                 throw new Error('Schema and schemaName are required when using a custom format');
             }
-            const formatInstructions = generateTemplateForSchema(
-                schema,
-                format,
-                formatOptions,
-            );
+            const formatInstructions = formatOptions
+                ? generateTemplateForSchema(schema, format, formatOptions)
+                : generateTemplateForSchema(schema, format);
             const lastMessage = messagesToPass[messagesToPass.length - 1];
 
             // Handle multi-modal content properly
