@@ -1298,10 +1298,14 @@ export function generateTemplateForSchema(
     schemaFormat: SchemaFormat,
     options?: FormatterOptions
 ): string {
+    if (!schemaFormat || !TemplateRegistry[schemaFormat]) {
+        throw new Error(`Invalid or undefined 'schemaFormat' provided: ${schemaFormat}. Available formats are: ${Object.keys(TemplateRegistry).join(', ')}`);
+    }
     const template = TemplateRegistry[schemaFormat].template(schema, options);
     const formatInstructions = TemplateRegistry[schemaFormat].prompt(template);
     return formatInstructions;
 }
+
 
 export function parseContentForSchema<OutputSchema extends z.AnyZodObject>(content: string, schemaFormat: SchemaFormat, schema: OutputSchema, options?: FormatterOptions): z.infer<OutputSchema> {
     const parser = TemplateRegistry[schemaFormat].parser;
